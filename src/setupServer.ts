@@ -1,4 +1,3 @@
-import { CustomError, IErrorResponse } from './shared/globals/helpers/error-handler';
 import { Application, json, urlencoded, Response, Request, NextFunction } from 'express';
 import http from 'http';
 import cors from 'cors';
@@ -12,8 +11,9 @@ import { createClient } from 'redis';
 import { createAdapter } from '@socket.io/redis-adapter';
 import Logger from 'bunyan';
 import 'express-async-errors';
-import { config } from './config';
-import applicationRoutes from './routes';
+import { config } from '@root/config';
+import applicationRoutes from '@root/routes';
+import { CustomError, IErrorResponse } from '@global/helpers/error-handler';
 
 const SERVER_PORT = 5003;
 const log: Logger = config.createLogger('setupServer');
@@ -72,9 +72,8 @@ export class ServerSetup {
     app.use((error: IErrorResponse, _req: Request, res: Response, next: NextFunction) => {
       log.error(error);
       if (error instanceof CustomError) {
-        return res.status(error.statusCode).json(error.serializeErrors);
+        return res.status(error.statusCode).json(error.serializeErrors());
       }
-
       next();
     });
   }
@@ -111,5 +110,6 @@ export class ServerSetup {
     });
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
   private socketIoConnections(io: Server): void {}
 }
