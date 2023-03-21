@@ -6,7 +6,7 @@ import { Request, Response } from 'express';
 import HTTP_STATUS from 'http-status-codes';
 import { joiValidation } from '@global/decorators/joi-validation.decorators';
 import { signupSchema } from '@auth/schemes/signup';
-import { DuplicateError, BadRequestError } from '@global/helpers/error-handler';
+import { BadRequestError } from '@global/helpers/error-handler';
 import { authService } from '@service/database/auth.service';
 import { IAuthDocument, ISignUpData } from '@auth/interfaces/auth.interface';
 import { uploads } from '@global/helpers/cloudinary-upload';
@@ -25,7 +25,7 @@ export class SignUp {
     const { username, email, password, avatarColor, avatarImage } = req.body;
     const checkUserExist: IAuthDocument = await authService.getUserByEmailOrUsername(username, email);
     if (checkUserExist) {
-      throw new DuplicateError('Account Already Exist With User Or Email');
+      throw new BadRequestError('Account Already Exist With User Or Email');
     }
 
     const authObjectId: ObjectId = new ObjectId();
@@ -43,7 +43,7 @@ export class SignUp {
 
     // UPLOAD IMAGE TO CLOUD
     const imageUpload: UploadApiResponse = (await uploads(avatarImage, `${userObjectId}`, true, true)) as UploadApiResponse;
-    if (!imageUpload) {
+    if (!imageUpload?.public_id) {
       throw new BadRequestError('Error occurred During File Upload. Try Again');
     }
 
@@ -63,7 +63,7 @@ export class SignUp {
     const userJwt: string = SignUp.prototype.signToken(authData, userObjectId);
     req.session = { jwt: userJwt };
 
-    res.status(HTTP_STATUS.CREATED).json({ status: 'success', message: 'Account Created', user: userDataForCache, token: userJwt });
+    res.status(HTTP_STATUS.CREATED).json({ message: 'Account Created', user: userDataForCache, token: userJwt });
   }
 
   private signToken(data: IAuthDocument, userObjectId: ObjectId): string {
