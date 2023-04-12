@@ -14,7 +14,7 @@ class RedisConnection extends BaseCache {
       await this.client.connect();
       log.info('Successfully connected redis.');
     } catch (error) {
-      log.error('Error connecting to database', error);
+      log.error('Error connecting to redis', error);
     }
   }
 }
