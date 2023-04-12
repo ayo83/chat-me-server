@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <h2>Socket.io Test</h2>
+
+    <div id="output"></div>
+
+    <!-- test-io-client.html -->
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/3.0.5/socket.io.min.js" integrity="sha512-L9L4VhE0D58fCxtJiYDHbIzSVfNGY24rhQPWTZPschTVKLpucPsLeT0FSjfnylLYARalTQqgwXsjjhi+wUTwIw==" crossorigin="anonymous"></script>
+
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/3.0.0/socket.io.min.js" integrity="sha512-uhQJ7yRsSv2qpuYz6muYG9h5epmWXLBCg9T5/s3IgveaTlCUlK2HvtoIc4dPO6GTXjA5SrDbh6LKIUM2gxJLvA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script> -->
+
+
+
+    <!-- <script src="/socket.io/socket.io.js"></script> -->
+    <script>
+        let file;
+
+        function init() {
+            output = document.getElementById("output");
+            console.log("page started");
+            testSocket();
+        }
+        // 'https://cbt-server-dev.herokuapp.com'
+
+        function testSocket() {
+            var socket = io.connect('localhost:5003');
+            socket.on('test', onMessage);
+            socket.on('connect', onConnect);
+            socket.on('disconnect', onDisconnect);
+            socket.on('connect_error', onError);
+            socket.on('reconnect_error', onError);
+
+
+            function onConnect(evt) {
+                writeToScreen("CONNECTED");
+
+                /** Uncomment To Run Each Function */
+
+                // newPost();
+                // getMyActiveExams();
+                // viewExam();
+                // getExamTimeLeft();
+                // getMyReadyExams();
+                // startExam();
+                // liveExams();
+                // liveReadyExams();
+                // readyExam();
+                // restartExam();
+
+
+            }
+
+
+            // TODO: Listen to New Post
+            function newPost() {
+                socket.on('add-post', (ack) => {
+                    writeToScreen(`<pre>LIVE${JSON.stringify(ack, null, 2)}</pre>`);
+                });
+            }
+
+
+            function getMyActiveExams() {
+                const body = {
+                    regNumber: '2014484648'
+                };
+                socket.emit('get-my-exams', body, (data) => {
+                    writeToScreen(`<pre>${JSON.stringify(data, null, 2)}</pre>`);
+                })
+            }
+
+
+             /**  Admin Ready Exam (Kindly add token to query)*/
+             function readyExam() {
+                const body = {
+                    examID: '61548ac293515f4e1c695fbb'
+                };
+                socket.emit('ready-exam', body, (stat) => {
+                    writeToScreen(`<pre>${JSON.stringify(stat, null, 2)}</pre>`);
+                });
+            }
+
+
+            /**  Admin Start Exam (Kindly add token to query)*/
+            function startExam() {
+                const body = {
+                    examID: '61548ac293515f4e1c695fbb'
+                };
+                socket.emit('start-exam', body, (stat) => {
+                    writeToScreen(`<pre>${JSON.stringify(stat, null, 2)}</pre>`);
+                });
+            }
+
+
+             /**  Admin reStart Exam (Kindly add token to query)*/
+             function restartExam() {
+                const body = {
+                    examID: '61548ac293515f4e1c695fbb'
+                };
+                socket.emit('restart-exam', body, (stat) => {
+                    writeToScreen(`<pre>${JSON.stringify(stat, null, 2)}</pre>`);
+                });
+            }
+
+            // TODO: Listen to live exams (Kindly add regNumber to query)
+            function liveExams() {
+                socket.on('live-exam', (ack) => {
+                    writeToScreen(`<pre>LIVE${JSON.stringify(ack, null, 2)}</pre>`);
+                });
+            }
+
+
+            // TODO: Listen to live ready exams(Kindly add regNumber to query)
+            function liveReadyExams() {
+                socket.on('live-ready-exams', (ack) => {
+                    writeToScreen(`<pre>${JSON.stringify(ack, null, 2)}</pre>`);
+                });
+            }
+
+
+            // TODO: Student Get his / her ready exams
+            function getMyReadyExams() {
+                const body = {
+                    regNumber: '2014484648'
+                };
+                socket.emit('get-my-ready-exams', body, (data) => {
+                    writeToScreen(`<pre>${JSON.stringify(data, null, 2)}</pre>`);
+                })
+            }
+
+            /**  Student view active exam by ID */
+            function viewExam() {
+                const body = {
+                    examID: '6149070efb30753f70416389'
+                };
+                socket.emit('view-my-exam', body, (stat) => {
+                    writeToScreen(`<pre>${JSON.stringify(stat, null, 2)}</pre>`);
+                });
+            }
+
+            /**  Get an exam time left */
+            function getExamTimeLeft() {
+                const body = {
+                    examID: '6149070efb30753f70416389'
+                };
+                socket.emit('exam-time-left', body, (stat) => {
+                    writeToScreen(`<pre>${JSON.stringify(stat, null, 2)}</pre>`);
+                });
+            }
+
+
+
+
+            window.addEventListener("input", (e) => {
+                e.preventDefault();
+                file = e.target.files[0];
+                sendStatus();
+            })
+
+            function onDisconnect(evt) {
+                writeToScreen("DISCONNECTED");
+            }
+
+            function onMessage(data) {
+                writeToScreen('<span style="color: blue;">RESPONSE: ' + data + '</span>');
+                socket.close();
+            }
+
+            function onError(message) {
+                writeToScreen('<span style="color: red;">ERROR:</span> ' + message);
+            }
+
+            function doSend(message) {
+                writeToScreen("SENT: " + message);
+                socket.emit('test', message);
+            }
+
+            function writeToScreen(message) {
+                var pre = document.createElement("p");
+                pre.style.wordWrap = "break-word";
+                pre.innerHTML = message;
+                output.appendChild(pre);
+            }
+        }
+
+        window.addEventListener("load", init, false);
+    </script>
+
+
+</body>
+
+</html>

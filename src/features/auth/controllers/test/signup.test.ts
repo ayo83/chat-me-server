@@ -2,7 +2,7 @@
 import { authService } from '@service/database/auth.service';
 import HTTP_STATUS from 'http-status-codes';
 import { Request, Response } from 'express';
-import * as cUpload from '@global/helpers/cloudinary-upload';
+import * as cloudinaryUploads from '@global/helpers/cloudinary-upload';
 import { authMock, authMockRequest, authMockResponse } from '@root/mocks/auth.mock';
 import { SignUp } from '../signup';
 import { CustomError } from '@global/helpers/error-handler';
@@ -218,31 +218,29 @@ describe('SignUp', () => {
   });
 
   /** CREATED SUCCESS USER TEST */
-  // it('Should set session data for valid credentials and send correct JSON response', async() => {
-  //   const req: Request = authMockRequest(
-  //     {},
-  //     {
-  //       username: 'Manny',
-  //       email: 'manny@test.com',
-  //       password: '12334567',
-  //       avatarColor: 'red',
-  //       avatarImage: 'data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD'
-  //     }
-  //   ) as Request;
+  it('should set session data for valid credentials and send correct json response', async () => {
+    const req: Request = authMockRequest(
+      {},
+      {
+        username: 'Manny',
+        email: 'manny@test.com',
+        password: 'qwerty',
+        avatarColor: 'red',
+        avatarImage: 'data:text/plain;base64,SGVsbG8sIFdvcmxkIQ=='
+      }
+    ) as Request;
+    const res: Response = authMockResponse();
 
-  //   const res: Response = authMockResponse();
+    jest.spyOn(authService, 'getUserByEmailOrUsername').mockResolvedValue(null as any);
+    const userSpy = jest.spyOn(UserCache.prototype, 'saveUserToCache');
+    jest.spyOn(cloudinaryUploads, 'uploads').mockImplementation((): any => Promise.resolve({ version: '1234737373', public_id: '123456' }));
 
-  //   jest.spyOn(authService, 'getUserByEmailOrUsername').mockResolvedValue(null as any);
-  //   const userSpy = jest.spyOn(UserCache.prototype, 'saveUserToCache');
-  //   jest.spyOn(cUpload, 'uploads').mockImplementation((): any => Promise.resolve({version: '123454555', public_id: '123456'}));
-
-  //   await SignUp.prototype.create(req, res);
-  //   expect(req.session?.jwt).toBeDefined();
-  //   // expect(res.status).toEqual(HTTP_STATUS.CREATED);
-  //   expect(res.json).toHaveBeenCalledWith({
-  //     message: 'Account Created',
-  //     user: userSpy.mock.calls[0][2],
-  //     token: req.session?.jwt,
-  //   });
-  // });
+    await SignUp.prototype.create(req, res);
+    expect(req.session?.jwt).toBeDefined();
+    expect(res.json).toHaveBeenCalledWith({
+      message: 'User created successfully',
+      user: userSpy.mock.calls[0][2],
+      token: req.session?.jwt
+    });
+  });
 });
