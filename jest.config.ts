@@ -29,6 +29,7 @@ const config: Config.InitialOptions = {
     '@auth/(.*)': ['<rootDir>/src/features/auth/$1'],
     '@user/(.*)': ['<rootDir>/src/features/user/$1'],
     '@post/(.*)': ['<rootDir>/src/features/post/$1'],
+    '@reaction/(.*)': ['<rootDir>/src/features/reaction/$1'],
     '@mock/(.*)': ['<rootDir>/src/mocks/$1'],
     '@root/(.*)': ['<rootDir>/src/$1'],
   }

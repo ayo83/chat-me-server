@@ -4,7 +4,7 @@ import { config } from '@root/config';
 import { ServerError } from '@global/helpers/error-handler';
 import { ISavePostToCache, IPostDocument } from '@post/interfaces/post.interface';
 import { Helpers } from '@global/helpers/helpers';
-import { IReactions } from '@root/features/reactions/interfaces/reaction.interface';
+import { IReactions } from '@reaction/interfaces/reaction.interface';
 import {RedisCommandRawReply} from '@redis/client/dist/lib/commands';
 
 const log: Logger = config.createLogger('postCache');
