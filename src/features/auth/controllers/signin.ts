@@ -53,16 +53,6 @@ export class SignIn {
       createdAt: existingUser!.createdAt
     } as IUserDocument;
 
-    const templateParams: IResetPasswordParams = {
-      username: userDocument.username!,
-      email: userDocument.email!,
-      ipaddress: publicIp.address(),
-      date: moment().format('DD/MM/YYYY HH:mm')
-    };
-
-    const template: string = resetPasswordTemplate.passwordResetConfirmationTemplate(templateParams);
-    emailQueue.addEmailJob('forgotPasswordEmail', {template, receiverEmail: 'helen12@ethereal.email', subject: 'Password Reset Confirmation'});
-
     res.status(HTTP_STATUS.OK).json({ status: 'success', message: 'User Login Successfully', token: userJwt, user: userDocument });
   }
 }

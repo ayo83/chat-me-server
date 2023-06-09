@@ -7,8 +7,9 @@ import { config } from '@root/config';
 import { IAuthJob } from '@auth/interfaces/auth.interface';
 import { IEmailJob } from '@user/interfaces/user.interface';
 import { IPostJobData } from '@post/interfaces/post.interface';
+import { IReactionJob } from '@reaction/interfaces/reaction.interface';
 
-type IBaseJobData = IAuthJob | IEmailJob | IPostJobData;
+type IBaseJobData = IAuthJob | IEmailJob | IPostJobData | IReactionJob;
 
 let bullAdapters: BullAdapter[] = [];
 export let serverAdapter: ExpressAdapter;
@@ -32,7 +33,8 @@ export abstract class BaseQueue {
     this.log = config.createLogger(`${queueName}Queue`);
 
     this.queue.on('completed', (job: Job) => {
-      job.remove();
+      this.log.info(`Job ${job.id} Completed`);
+      //job.remove();
     });
 
     this.queue.on('global:completed', (jobId: string) => {
