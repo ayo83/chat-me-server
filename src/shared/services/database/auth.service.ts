@@ -8,12 +8,14 @@ class AuthService {
   }
 
   public async updatePasswordToken(authId: string, token: string, tokenExpiration: number): Promise<void> {
-    await AuthModel.updateOne({_id: authId}, {
-      passwordResetToken: token,
-      passwordResetExpires: tokenExpiration
-    });
+    await AuthModel.updateOne(
+      { _id: authId },
+      {
+        passwordResetToken: token,
+        passwordResetExpires: tokenExpiration
+      }
+    );
   }
-
 
   public async getUserByEmailOrUsername(username: string, email: string): Promise<IAuthDocument> {
     const query = {
@@ -36,8 +38,8 @@ class AuthService {
   public async getAuthUserByToken(token: string): Promise<IAuthDocument> {
     const user: IAuthDocument = (await AuthModel.findOne({
       passwordResetToken: token,
-      passwordResetExpires: {$gt: Date.now()}
-     }).exec()) as IAuthDocument;
+      passwordResetExpires: { $gt: Date.now() }
+    }).exec()) as IAuthDocument;
     return user;
   }
 }

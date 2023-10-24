@@ -5,12 +5,11 @@ import { ServerError } from '@global/helpers/error-handler';
 import { ISavePostToCache, IPostDocument } from '@post/interfaces/post.interface';
 import { Helpers } from '@global/helpers/helpers';
 import { IReactions } from '@reaction/interfaces/reaction.interface';
-import {RedisCommandRawReply} from '@redis/client/dist/lib/commands';
+import { RedisCommandRawReply } from '@redis/client/dist/lib/commands';
 
 const log: Logger = config.createLogger('postCache');
 
 export type PostCacheMultiType = string | number | Buffer | RedisCommandRawReply[] | IPostDocument | IPostDocument[];
-
 
 export class PostCache extends BaseCache {
   constructor() {
@@ -42,26 +41,25 @@ export class PostCache extends BaseCache {
     } = createdPost;
 
     const dataToSave = {
-      '_id': `${_id}`,
-      'userId': `${userId}`,
-      'username': `${username}`,
-      'email': `${email}`,
-      'avatarColor': `${avatarColor}`,
-      'profilePicture': `${profilePicture}`,
-      'post': `${post}`,
-      'bgColor': `${bgColor}`,
-      'feelings': `${feelings}`,
-      'privacy': `${privacy}`,
-      'gifUrl': `${gifUrl}`,
-      'commentsCount': `${commentsCount}`,
-      'reactions': JSON.stringify(reactions),
-      'imgVersion': `${imgVersion}`,
-      'imgId': `${imgId}`,
+      _id: `${_id}`,
+      userId: `${userId}`,
+      username: `${username}`,
+      email: `${email}`,
+      avatarColor: `${avatarColor}`,
+      profilePicture: `${profilePicture}`,
+      post: `${post}`,
+      bgColor: `${bgColor}`,
+      feelings: `${feelings}`,
+      privacy: `${privacy}`,
+      gifUrl: `${gifUrl}`,
+      commentsCount: `${commentsCount}`,
+      reactions: JSON.stringify(reactions),
+      imgVersion: `${imgVersion}`,
+      imgId: `${imgId}`,
       // 'videoId': `${videoId}`,
       // 'videoVersion': `${videoVersion}`,
-      'createdAt': `${createdAt}`
+      createdAt: `${createdAt}`
     };
-
 
     try {
       if (!this.client.isOpen) {
@@ -72,12 +70,12 @@ export class PostCache extends BaseCache {
 
       const mutilRedisCommand: ReturnType<typeof this.client.multi> = this.client.multi();
       mutilRedisCommand.ZADD('post', { score: parseInt(uId, 10), value: `${key}` });
-      for(const [itemKey, itemValue] of Object.entries(dataToSave)) {
+      for (const [itemKey, itemValue] of Object.entries(dataToSave)) {
         mutilRedisCommand.HSET(`posts:${key}`, `${itemKey}`, `${itemValue}`);
       }
 
       const count: number = parseInt(postsCount[0], 10) + 1;
-      mutilRedisCommand.HSET(`users:${currentUserId}`,'postsCount', count);
+      mutilRedisCommand.HSET(`users:${currentUserId}`, 'postsCount', count);
       mutilRedisCommand.exec();
     } catch (error) {
       log.error(error);
@@ -113,7 +111,6 @@ export class PostCache extends BaseCache {
     }
   }
 
-
   public async getTotalPostsInCache(): Promise<number> {
     try {
       if (!this.client.isOpen) {
@@ -126,8 +123,6 @@ export class PostCache extends BaseCache {
       throw new ServerError('Server error. Try again.');
     }
   }
-
-
 
   public async getPostsWithImagesFromCache(key: string, start: number, end: number): Promise<IPostDocument[]> {
     try {
@@ -211,7 +206,6 @@ export class PostCache extends BaseCache {
     }
   }
 
-
   public async getTotalUserPostsInCache(uId: number): Promise<number> {
     try {
       if (!this.client.isOpen) {
@@ -224,8 +218,6 @@ export class PostCache extends BaseCache {
       throw new ServerError('Server error. Try again.');
     }
   }
-
-
 
   public async deletePostFromCache(key: string, currentUserId: string): Promise<void> {
     try {
@@ -247,28 +239,26 @@ export class PostCache extends BaseCache {
     }
   }
 
-
-
   public async updatePostInCache(key: string, updatedPost: IPostDocument): Promise<IPostDocument> {
     const { post, bgColor, feelings, privacy, gifUrl, imgVersion, imgId, profilePicture } = updatedPost;
     const dataToSave = {
-      'post': `${post}`,
-      'bgColor': `${bgColor}`,
-      'feelings': `${feelings}`,
-      'privacy': `${privacy}`,
-      'gifUrl': `${gifUrl}`,
+      post: `${post}`,
+      bgColor: `${bgColor}`,
+      feelings: `${feelings}`,
+      privacy: `${privacy}`,
+      gifUrl: `${gifUrl}`,
       // 'videoId': `${videoId}`,
       // 'videoVersion': `${videoVersion}`,
-      'profilePicture': `${profilePicture}`,
-      'imgVersion': `${imgVersion}`,
-      'imgId': `${imgId}`
+      profilePicture: `${profilePicture}`,
+      imgVersion: `${imgVersion}`,
+      imgId: `${imgId}`
     };
 
     try {
       if (!this.client.isOpen) {
         await this.client.connect();
       }
-      for(const [itemKey, itemValue] of Object.entries(dataToSave)) {
+      for (const [itemKey, itemValue] of Object.entries(dataToSave)) {
         await this.client.HSET(`posts:${key}`, `${itemKey}`, `${itemValue}`);
       }
       const multi: ReturnType<typeof this.client.multi> = this.client.multi();
@@ -285,5 +275,4 @@ export class PostCache extends BaseCache {
       throw new ServerError('Server error. Try again.');
     }
   }
-
 }

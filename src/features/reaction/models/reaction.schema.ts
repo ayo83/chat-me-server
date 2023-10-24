@@ -10,11 +10,11 @@ const reactionSchema: Schema = new Schema({
   type: {
     type: String,
     default: ''
-   },
+  },
   username: {
-     type: String,
-     default: ''
-    },
+    type: String,
+    default: ''
+  },
   avataColor: {
     type: String,
     default: ''

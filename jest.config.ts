@@ -30,6 +30,8 @@ const config: Config.InitialOptions = {
     '@user/(.*)': ['<rootDir>/src/features/user/$1'],
     '@post/(.*)': ['<rootDir>/src/features/post/$1'],
     '@reaction/(.*)': ['<rootDir>/src/features/reaction/$1'],
+    '@comment/(.*)': ['<rootDir>/src/features/comments/$1'],
+    '@follower/(.*)': ['<rootDir>/src/features/followers/$1'],
     '@mock/(.*)': ['<rootDir>/src/mocks/$1'],
     '@root/(.*)': ['<rootDir>/src/$1'],
   }

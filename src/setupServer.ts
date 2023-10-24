@@ -111,9 +111,8 @@ export class ServerSetup {
     });
   }
 
-
   private socketIoConnections(io: Server): void {
-    const postSocketHandler : SocketIOPostHandler = new SocketIOPostHandler(io);
+    const postSocketHandler: SocketIOPostHandler = new SocketIOPostHandler(io);
 
     postSocketHandler.listen();
   }

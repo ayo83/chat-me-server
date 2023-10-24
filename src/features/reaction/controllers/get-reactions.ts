@@ -14,7 +14,7 @@ export class Get {
     const reactions: [IReactionDocument[], number] = cachedReactions[0].length
       ? cachedReactions
       : await reactionService.getPostReactions({ postId: new mongoose.Types.ObjectId(postId) }, { createdAt: -1 });
-    res.status(HTTP_STATUS.OK).json({ message: 'Post reactions', reactionCount: reactions[1],reactions: reactions[0] });
+    res.status(HTTP_STATUS.OK).json({ message: 'Post reactions', reactionCount: reactions[1], reactions: reactions[0] });
   }
 
   public async singleReactionByUsername(req: Request, res: Response): Promise<void> {

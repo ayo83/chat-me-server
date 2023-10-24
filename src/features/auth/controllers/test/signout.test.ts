@@ -17,8 +17,8 @@ describe('SignOut', () => {
     const req: Request = authMockRequest({}, { username: USERNAME, password: PASSWORD }) as Request;
     const res: Response = authMockResponse();
     await SignOut.prototype.logout(req, res);
-     expect(res.status).toHaveBeenCalledWith(200);
-     expect(res.json).toHaveBeenCalledWith({
+    expect(res.status).toHaveBeenCalledWith(200);
+    expect(res.json).toHaveBeenCalledWith({
       message: 'Logout successful',
       user: {},
       token: ''
