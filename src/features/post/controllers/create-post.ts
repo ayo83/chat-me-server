@@ -98,5 +98,4 @@ export class Create {
     // });
     res.status(HTTP_STATUS.CREATED).json({ message: 'Post created with image successfully' });
   }
-
 }

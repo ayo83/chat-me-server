@@ -47,7 +47,6 @@ describe('SignUp', () => {
     });
   });
 
-
   it('Should throw an error when username length is less than minimum length', () => {
     const req: Request = authMockRequest(
       {},
@@ -67,7 +66,6 @@ describe('SignUp', () => {
       expect(error.serializeErrors().message).toEqual('Invalid username');
     });
   });
-
 
   it('Should throw an error when username length is greater than max length', () => {
     const req: Request = authMockRequest(
@@ -110,7 +108,6 @@ describe('SignUp', () => {
     });
   });
 
-
   it('Should throw an error when email is not valid', () => {
     const req: Request = authMockRequest(
       {},
@@ -152,7 +149,6 @@ describe('SignUp', () => {
     });
   });
 
-
   it('Should throw an error when password length is less than minimum length', () => {
     const req: Request = authMockRequest(
       {},
@@ -172,7 +168,6 @@ describe('SignUp', () => {
       expect(error.serializeErrors().message).toEqual('Invalid password');
     });
   });
-
 
   it('Should throw an error when pass length is greater than max length', () => {
     const req: Request = authMockRequest(

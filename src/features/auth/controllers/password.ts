@@ -25,15 +25,14 @@ export class Password {
 
     const randomBytes: Buffer = await Promise.resolve(crypto.randomBytes(20));
     const randomCharacters: string = randomBytes.toString('hex');
-    await authService.updatePasswordToken(`${existingUser._id!}`, randomCharacters, Date.now() * 60 * 60 *1000);
+    await authService.updatePasswordToken(`${existingUser._id!}`, randomCharacters, Date.now() * 60 * 60 * 1000);
 
     const resetLink = `${config.CLIENT_URL}/reset-password?token=${randomCharacters}`;
     const template: string = forgotPasswordTemplate.passwordResetTemplate(existingUser.username!, resetLink);
-    emailQueue.addEmailJob('forgotPasswordEmail', {template, receiverEmail: req.body.email, subject: 'Reset Your Password'});
+    emailQueue.addEmailJob('forgotPasswordEmail', { template, receiverEmail: req.body.email, subject: 'Reset Your Password' });
 
-    res.status(HTTP_STATUS.OK).json({message: `Rest Password Link Sent To ${req.body.email}`});
+    res.status(HTTP_STATUS.OK).json({ message: `Rest Password Link Sent To ${req.body.email}` });
   }
-
 
   @joiValidation(passwordSchema)
   public async resetPassword(req: Request, res: Response): Promise<void> {
@@ -55,8 +54,8 @@ export class Password {
     };
 
     const template: string = resetPasswordTemplate.passwordResetConfirmationTemplate(templateParams);
-    emailQueue.addEmailJob('forgotPasswordEmail', {template, receiverEmail: existingUser.email!, subject: 'Password Reset Confirmation'});
+    emailQueue.addEmailJob('forgotPasswordEmail', { template, receiverEmail: existingUser.email!, subject: 'Password Reset Confirmation' });
 
-    res.status(HTTP_STATUS.OK).json({message: 'Password Reset Successfully'});
+    res.status(HTTP_STATUS.OK).json({ message: 'Password Reset Successfully' });
   }
 }

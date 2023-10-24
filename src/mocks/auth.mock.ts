@@ -10,9 +10,8 @@ export const authMockRequest = (sessionData: IJWT, body: IAuthMock, currentUser?
   currentUser
 });
 
-
-export const authMockResponse = (): Response =>{
-  const res : Response = {} as Response;
+export const authMockResponse = (): Response => {
+  const res: Response = {} as Response;
   res.status = jest.fn().mockRejectedValue(res);
   res.json = jest.fn().mockReturnValue(res);
 
@@ -20,21 +19,20 @@ export const authMockResponse = (): Response =>{
 };
 
 export interface IJWT {
-  jwt?: string
+  jwt?: string;
 }
 
 export interface IAuthMock {
-  _id?: string,
-  username?: string,
-  email?: string,
-  uid?: string,
-  password?: string,
-  confirmPassword?: string,
-  avatarColor?: string,
-  avatarImage?: string,
-  dateCreated?: Date | string
+  _id?: string;
+  username?: string;
+  email?: string;
+  uid?: string;
+  password?: string;
+  confirmPassword?: string;
+  avatarColor?: string;
+  avatarImage?: string;
+  dateCreated?: Date | string;
 }
-
 
 export interface IUserMock {
   _id?: string;

@@ -1,6 +1,7 @@
 import { reactionRoutes } from './features/reaction/routes/reactionRoutes';
 import { authRoutes } from '@auth/routes/authRoutes';
 import { currentUserRoutes } from '@auth/routes/currentUserRoutes';
+import { commentRoutes } from '@comment/routes/commentRoutes';
 import { authMiddleware } from '@global/helpers/auth-middleware';
 import { postRoutes } from '@post/routes/postRoutes';
 import { serverAdapter } from '@service/queues/base.queue';
@@ -14,10 +15,10 @@ export default (app: Application) => {
     app.use(BASE_PATH, authRoutes.routes());
     app.use(BASE_PATH, authRoutes.signOutRoute());
 
-
     app.use(BASE_PATH, authMiddleware.verifyUser, currentUserRoutes.routes());
     app.use(BASE_PATH, authMiddleware.verifyUser, postRoutes.routes());
     app.use(BASE_PATH, authMiddleware.verifyUser, reactionRoutes.routes());
+    app.use(BASE_PATH, authMiddleware.verifyUser, commentRoutes.routes());
   };
   routes();
 };

@@ -27,7 +27,7 @@ export class Update {
       gifUrl,
       profilePicture,
       imgId,
-      imgVersion,
+      imgVersion
       // videoId: '',
       // videoVersion: ''
     } as unknown as IPostDocument;
@@ -102,7 +102,7 @@ export class Update {
       gifUrl,
       profilePicture,
       imgId: image ? result.public_id : '',
-      imgVersion: image ? result.version.toString() : '',
+      imgVersion: image ? result.version.toString() : ''
       // videoId: video ? result.public_id : '',
       // videoVersion: video ? result.version.toString() : ''
     } as unknown as IPostDocument;

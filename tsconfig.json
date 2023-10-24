@@ -32,6 +32,8 @@
         "@user/*": ["src/features/user/*"],
         "@post/*": ["src/features/post/*"],
         "@reaction/*": ["src/features/reaction/*"],
+        "@comment/*": ["src/features/comments/*"],
+        "@follower/*": ["src/features/followers/*"],
         "@mock/*": ["src/mocks/*"],
         "@root/*": ["src/*"],
     }
