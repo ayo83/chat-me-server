@@ -30,6 +30,7 @@
         "@worker/*": ["src/shared/workers/*"],
         "@auth/*": ["src/features/auth/*"],
         "@user/*": ["src/features/user/*"],
+        "@notification/*": ["src/features/notifications/*"],
         "@post/*": ["src/features/post/*"],
         "@reaction/*": ["src/features/reaction/*"],
         "@comment/*": ["src/features/comments/*"],
