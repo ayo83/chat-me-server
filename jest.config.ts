@@ -34,6 +34,7 @@ const config: Config.InitialOptions = {
     '@follower/(.*)': ['<rootDir>/src/features/followers/$1'],
     '@notification/(.*)': ['<rootDir>/src/features/notifications/$1'],
     '@image/(.*)': ['<rootDir>/src/features/images/$1'],
+    '@chat/(.*)': ['<rootDir>/src/features/chat/$1'],
     '@mock/(.*)': ['<rootDir>/src/mocks/$1'],
     '@root/(.*)': ['<rootDir>/src/$1'],
   }
