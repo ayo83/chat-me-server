@@ -36,6 +36,7 @@
         "@reaction/*": ["src/features/reaction/*"],
         "@comment/*": ["src/features/comments/*"],
         "@follower/*": ["src/features/followers/*"],
+        "@chat/*": ["src/features/chat/*"],
         "@mock/*": ["src/mocks/*"],
         "@root/*": ["src/*"],
     }

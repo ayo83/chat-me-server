@@ -18,7 +18,7 @@ export class SocketIOPostHandler {
 
   public listen(): void {
     this.io.on('connection', (socket: Socket) => {
-      log.info(`${socket.id} joined post socket`);
+      log.info(`${socket.id} joined socket`);
       socket.on('reaction', (reaction: IReactionDocument) => {
         this.io.emit('update-like', reaction);
       });
