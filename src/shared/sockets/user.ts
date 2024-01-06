@@ -22,11 +22,11 @@ export class SocketIOUserHandler {
       });
 
       socket.on('block user', (data: ISocketData) => {
-        this.io.emit('blocked-user-id', data);
+        this.io.emit('blocked user id', data);
       });
 
       socket.on('unblock user', (data: ISocketData) => {
-        this.io.emit('unblocked-user-id', data);
+        this.io.emit('unblocked user id', data);
       });
 
       socket.on('disconnect', () => {
