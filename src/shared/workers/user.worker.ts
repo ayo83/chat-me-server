@@ -3,15 +3,49 @@ import Logger from 'bunyan';
 import { config } from '@root/config';
 import { userService } from '@service/database/user.service';
 
-const log: Logger = config.createLogger('authWorker');
+const log: Logger = config.createLogger('userWorker');
 
 class UserWorker {
-  async addUserToDb(job: Job, done: DoneCallback): Promise<void> {
+  async addUserToDB(job: Job, done: DoneCallback): Promise<void> {
     try {
       const { value } = job.data;
+      await userService.addUserData(value);
+      job.progress(100);
+      done(null, job.data);
+    } catch (error) {
+      log.error(error);
+      done(error as Error);
+    }
+  }
 
-      // ADD METHOD TO SEND DATA TO DB
-      await userService.addUserToDb(value);
+  async updateUserInfo(job: Job, done: DoneCallback): Promise<void> {
+    try {
+      const { key, value } = job.data;
+      await userService.updateUserInfo(key, value);
+      job.progress(100);
+      done(null, job.data);
+    } catch (error) {
+      log.error(error);
+      done(error as Error);
+    }
+  }
+
+  async updateSocialLinks(job: Job, done: DoneCallback): Promise<void> {
+    try {
+      const { key, value } = job.data;
+      await userService.updateSocialLinks(key, value);
+      job.progress(100);
+      done(null, job.data);
+    } catch (error) {
+      log.error(error);
+      done(error as Error);
+    }
+  }
+
+  async updateNotificationSettings(job: Job, done: DoneCallback): Promise<void> {
+    try {
+      const { key, value } = job.data;
+      await userService.updateNotificationSettings(key, value);
       job.progress(100);
       done(null, job.data);
     } catch (error) {
