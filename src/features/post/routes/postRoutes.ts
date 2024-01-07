@@ -16,15 +16,15 @@ class PostRoutes {
   public routes(): Router {
     this.router.get('/post/post-all/:page', authMiddleware.checkUserAuth, Get.prototype.posts);
     this.router.get('/post/post-images/:page', authMiddleware.checkUserAuth, Get.prototype.postsWithImages);
-    // this.router.get('/post/videos/:page', authMiddleware.checkAuthentication, Get.prototype.postsWithVideos);
+    this.router.get('/post/videos/:page', authMiddleware.checkUserAuth, Get.prototype.postsWithVideos);
 
     this.router.post('/post/create-post', authMiddleware.checkUserAuth, Create.prototype.post);
     this.router.post('/post/create-image-post', authMiddleware.checkUserAuth, Create.prototype.postWithImage);
-    // this.router.post('/post/video/post', authMiddleware.checkAuthentication, Create.prototype.postWithVideo);
+    this.router.post('/post/video/post', authMiddleware.checkUserAuth, Create.prototype.postWithVideo);
 
     this.router.put('/post/edit-post/:postId', authMiddleware.checkUserAuth, Update.prototype.posts);
     this.router.put('/post/image/:postId', authMiddleware.checkUserAuth, Update.prototype.postWithImage);
-    // this.router.put('/post/video/:postId', authMiddleware.checkAuthentication, Update.prototype.postWithVideo);
+    this.router.put('/post/video/:postId', authMiddleware.checkUserAuth, Update.prototype.postWithVideo);
 
     this.router.delete('/post/delete-post/:postId', authMiddleware.checkUserAuth, Delete.prototype.post);
 
