@@ -9,6 +9,7 @@ import { imageRoutes } from '@image/routes/imageRoutes';
 import { notificationRoutes } from '@notification/routes/notificationRoutes';
 import { postRoutes } from '@post/routes/postRoutes';
 import { serverAdapter } from '@service/queues/base.queue';
+import { healthRoutes } from '@user/routes/healthRoutes';
 import { userRoutes } from '@user/routes/userRoutes';
 import { Application } from 'express';
 
@@ -17,6 +18,11 @@ const BASE_PATH = '/api/v1';
 export default (app: Application) => {
   const routes = () => {
     app.use('/queues', serverAdapter.getRouter());
+    app.use(BASE_PATH, healthRoutes.health());
+    app.use(BASE_PATH, healthRoutes.env());
+    app.use(BASE_PATH, healthRoutes.instance());
+    app.use(BASE_PATH, healthRoutes.fiboRoutes());
+
     app.use(BASE_PATH, authRoutes.routes());
     app.use(BASE_PATH, authRoutes.signOutRoute());
 
