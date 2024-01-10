@@ -83,3 +83,11 @@ export class ServerError extends CustomError {
     super(message);
   }
 }
+export class DuplicateError extends CustomError {
+  statusCode = HTTP_STATUS.CONFLICT;
+  status = 'error';
+
+  constructor(message: string) {
+    super(message);
+  }
+}
