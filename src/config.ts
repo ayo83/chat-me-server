@@ -11,6 +11,7 @@ class Config {
   public SECRET_KEY_ONE: string | undefined;
   public SECRET_KEY_TWO: string | undefined;
   public CLIENT_URL: string | undefined;
+  public API_URL: string | undefined;
   public REDIS_HOST: string | undefined;
   public CLOUD_NAME: string | undefined;
   public CLOUD_API_KEY: string | undefined;
@@ -20,6 +21,9 @@ class Config {
   public SENDGRID_API_KEY: string | undefined;
   public SENDGRID_SENDER: string | undefined;
   public EC2_URL: string | undefined;
+  public EMAIL_HOST: string | undefined;
+  public EMAIL_USER: string | undefined;
+  public EMAIL_PASS: string | undefined;
 
   private readonly DEFAULT_DATABASE_URL = 'mongodb://localhost:27017/chattyapp-server';
 
@@ -29,6 +33,7 @@ class Config {
     this.NODE_ENV = process.env.NODE_ENV || '';
     this.SECRET_KEY_ONE = process.env.SECRET_KEY_ONE || '';
     this.SECRET_KEY_TWO = process.env.SECRET_KEY_TWO || '';
+    this.API_URL = process.env.API_URL || '';
     this.CLIENT_URL = process.env.CLIENT_URL || '';
     this.REDIS_HOST = process.env.REDIS_HOST || '';
     this.CLOUD_NAME = process.env.CLOUD_NAME || '';
@@ -39,6 +44,9 @@ class Config {
     this.SENDGRID_API_KEY = process.env.SENDGRID_API_KEY || '';
     this.SENDGRID_SENDER = process.env.SENDGRID_SENDER || '';
     this.EC2_URL = process.env.EC2_URL || '';
+    this.EMAIL_HOST = process.env.EMAIL_HOST || '';
+    this.EMAIL_USER = process.env.EMAIL_USER || '';
+    this.EMAIL_PASS = process.env.EMAIL_PASS || '';
   }
 
   public createLogger(name: string): bunyan {

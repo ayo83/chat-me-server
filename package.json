@@ -4,6 +4,9 @@
   "description": "Type Script Back End",
   "main": "server.js",
   "scripts": {
+    "start": "NODE_ENV=production pm2 start ./build/src/server.js -i 5 --attach --watch | ./node_modules/.bin/bunyan",
+    "stop": "pm2 stop all",
+    "delete": "pm2 delete all",
     "dev": "nodemon -r tsconfig-paths/register src/server.ts | ./node_modules/.bin/bunyan",
     "lint-check": "eslint 'src/**/*.ts'",
     "lint-fix": "eslint 'src/**/*.ts' --fix",
@@ -19,6 +22,7 @@
   "dependencies": {
     "@bull-board/express": "^4.12.1",
     "@bull-board/ui": "^4.12.1",
+    "@faker-js/faker": "^7.6.0",
     "@jest/types": "^29.5.0",
     "@sendgrid/mail": "^7.7.0",
     "@socket.io/redis-adapter": "^8.1.0",
@@ -27,6 +31,7 @@
     "bcryptjs": "^2.4.3",
     "bull": "^4.10.4",
     "bunyan": "^1.8.15",
+    "canvas": "^2.11.2",
     "cloudinary": "^1.33.0",
     "compression": "^1.7.4",
     "cookie-session": "^2.0.0",
@@ -48,6 +53,7 @@
     "nodemailer": "^6.9.1",
     "redis": "^4.6.4",
     "socket.io": "^4.6.0",
+    "swagger-stats": "^0.99.7",
     "ttypescript": "^1.5.15",
     "typescript": "^4.9.5",
     "typescript-transform-paths": "^3.4.6"
@@ -67,6 +73,7 @@
     "@types/lodash": "^4.14.191",
     "@types/nodemailer": "^6.4.7",
     "@types/redis-info": "^3.0.0",
+    "@types/swagger-stats": "^0.95.11",
     "@typescript-eslint/eslint-plugin": "^5.51.0",
     "@typescript-eslint/parser": "^5.51.0",
     "eslint": "^8.34.0",

@@ -57,7 +57,7 @@ export class SignUp {
     // ADD TO DATABASE
     const omittedUserDated = omit(userDataForCache, ['uId', 'username', 'email', 'avatarColor', 'password']);
     authQueue.addAuthUserJob('addAuthUserToJob', { value: authData });
-    userQueue.addUserJob('addUserToJob', { value: omittedUserDated });
+    userQueue.addUserJob('addUserToDB', { value: omittedUserDated });
 
     // SIGN TOKEN
     const userJwt: string = SignUp.prototype.signToken(authData, userObjectId);
