@@ -7,10 +7,8 @@ import { joiValidation } from '@global/decorators/joi-validation.decorators';
 import { postSchema, postWithImageSchema, postWithVideoSchema } from '@post/schemes/post.schemes';
 import { IPostDocument } from '@post/interfaces/post.interface';
 import { UploadApiResponse } from 'cloudinary';
-// import { uploads, videoUpload } from '@global/helpers/cloudinary-upload';
+import { uploads, videoUpload } from '@global/helpers/cloudinary-upload';
 import { BadRequestError } from '@global/helpers/error-handler';
-// import { imageQueue } from '@service/queues/image.queue';
-import { uploads } from '@global/helpers/cloudinary-upload';
 import { imageQueue } from '@service/queues/image.queue';
 
 const postCache: PostCache = new PostCache();
@@ -28,10 +26,10 @@ export class Update {
       gifUrl,
       profilePicture,
       imgId,
-      imgVersion
-      // videoId: '',
-      // videoVersion: ''
-    } as unknown as IPostDocument;
+      imgVersion,
+      videoId: '',
+      videoVersion: ''
+    } as IPostDocument;
 
     const postUpdated: IPostDocument = await postCache.updatePostInCache(postId, updatedPost);
     socketIOPostObject.emit('update post', postUpdated, 'posts');
@@ -81,7 +79,7 @@ export class Update {
       imgVersion: imgVersion ? imgVersion : '',
       videoId: videoId ? videoId : '',
       videoVersion: videoVersion ? videoVersion : ''
-    } as unknown as IPostDocument;
+    } as IPostDocument;
 
     const postUpdated: IPostDocument = await postCache.updatePostInCache(postId, updatedPost);
     socketIOPostObject.emit('update post', postUpdated, 'posts');
@@ -89,9 +87,11 @@ export class Update {
   }
 
   private async addImageToExistingPost(req: Request): Promise<UploadApiResponse> {
-    const { post, bgColor, feelings, privacy, gifUrl, profilePicture, image } = req.body;
+    const { post, bgColor, feelings, privacy, gifUrl, profilePicture, image, video } = req.body;
     const { postId } = req.params;
-    const result: UploadApiResponse = image && ((await uploads(image)) as UploadApiResponse);
+    const result: UploadApiResponse = image
+      ? ((await uploads(image)) as UploadApiResponse)
+      : ((await videoUpload(video)) as UploadApiResponse);
     if (!result?.public_id) {
       return result;
     }
@@ -103,10 +103,10 @@ export class Update {
       gifUrl,
       profilePicture,
       imgId: image ? result.public_id : '',
-      imgVersion: image ? result.version.toString() : ''
-      // videoId: video ? result.public_id : '',
-      // videoVersion: video ? result.version.toString() : ''
-    } as unknown as IPostDocument;
+      imgVersion: image ? result.version.toString() : '',
+      videoId: video ? result.public_id : '',
+      videoVersion: video ? result.version.toString() : ''
+    } as IPostDocument;
 
     const postUpdated: IPostDocument = await postCache.updatePostInCache(postId, updatedPost);
     socketIOPostObject.emit('update post', postUpdated, 'posts');

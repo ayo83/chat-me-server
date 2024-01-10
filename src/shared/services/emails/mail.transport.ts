@@ -47,20 +47,46 @@ class MailTransport {
     }
   }
 
+
   private async productionEmailSender(receiverEmail: string, subject: string, body: string): Promise<void> {
+    const transporter: Mail = nodemailer.createTransport({
+      host: config.EMAIL_HOST!,
+      port: 465,
+      secure: true,
+      auth: {
+        user: config.EMAIL_USER!,
+        pass: config.EMAIL_PASS!
+      }
+    });
+
     const mailOptions: IMailOptions = {
-      from: `Chatty Application <${config.SENDER_EMAIL!}>`,
+      from: `Chatty Application <${config.EMAIL_USER!}>`,
       to: receiverEmail,
       subject,
       html: body
     };
     try {
-      await sendGridMail.send(mailOptions);
+      await transporter.sendMail(mailOptions);
       log.info('Production Email Sent Successfully');
     } catch (error) {
       log.error('Error Sending Email', error);
     }
   }
+
+  // private async productionEmailSender(receiverEmail: string, subject: string, body: string): Promise<void> {
+  //   const mailOptions: IMailOptions = {
+  //     from: `Chatty Application <${config.SENDER_EMAIL!}>`,
+  //     to: receiverEmail,
+  //     subject,
+  //     html: body
+  //   };
+  //   try {
+  //     await sendGridMail.send(mailOptions);
+  //     log.info('Production Email Sent Successfully');
+  //   } catch (error) {
+  //     log.error('Error Sending Email', error);
+  //   }
+  // }
 }
 
 export const mailTransport: MailTransport = new MailTransport();
