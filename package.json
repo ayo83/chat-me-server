@@ -5,7 +5,7 @@
   "main": "server.js",
   "scripts": {
     "start": "NODE_ENV=production pm2 start ./build/src/server.js -i 5 --attach --watch | ./node_modules/.bin/bunyan",
-    "render-start": "node ./build/src/server.js",
+    "render-start": "node ./build/src/server.js | ./node_modules/.bin/bunyan",
     "stop": "pm2 stop all",
     "delete": "pm2 delete all",
     "dev": "nodemon -r tsconfig-paths/register src/server.ts | ./node_modules/.bin/bunyan",
